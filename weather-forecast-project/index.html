@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Weather Forecast Project</title>
+
+  <!-- Tailwind CDN (optional) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Local stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <meta name="description" content="Responsive weather forecast using WeatherAPI. Includes 5-day forecast, recent searches, unit toggle, location detection and rain animation.">
+</head>
+<body class="bg-slate-100 text-slate-900">
+
+  <div id="rainLayer" class="rain-layer" aria-hidden="true"></div>
+
+  <main class="max-w-6xl mx-auto p-4">
+    <header class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl md:text-3xl font-bold">Weather Forecast</h1>
+      <div class="text-sm text-slate-500">Tailwind + WeatherAPI • Responsive</div>
+    </header>
+
+    <section class="mb-6 glass rounded-lg p-4 shadow-sm">
+      <div class="flex flex-col md:flex-row gap-3 items-center">
+        <div class="flex-1 flex gap-2">
+          <input id="cityInput" placeholder="Enter city (e.g. London)" class="flex-1 p-3 rounded-md bg-transparent border border-slate-300 focus:border-sky-400 outline-none" aria-label="City input" />
+          <button id="searchBtn" class="px-4 py-3 rounded-md bg-sky-600 text-white">Search</button>
+        </div>
+
+        <div class="flex gap-2 items-center">
+          <button id="locBtn" class="px-4 py-3 rounded-md border border-slate-300">Use my location</button>
+          <div class="relative">
+            <button id="recentToggle" class="px-3 py-2 rounded-md border border-slate-300" aria-haspopup="true" aria-expanded="false">Recent ▼</button>
+            <div id="recentDropdown" class="absolute right-0 mt-2 w-56 bg-white border rounded shadow hidden z-10" role="menu" aria-label="Recent searches"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="errorBox" class="mt-3 hidden p-3 border-l-4 border-red-500 bg-red-50 text-red-700 rounded" role="alert">
+        <span id="errorMsg"></span>
+      </div>
+    </section>
+
+    <section class="grid gap-6 grid-layout">
+      <div>
+        <div id="todayCard" class="glass rounded-lg p-6 mb-6 shadow-sm">
+          <div id="todayPlaceholder" class="text-center py-12 text-slate-500">
+            Search a city or use current location to see weather.
+          </div>
+
+          <div id="today" class="hidden">
+            <div class="flex items-center justify-between">
+              <div>
+                <div id="todayCity" class="text-xl font-semibold"></div>
+                <div id="todayDesc" class="text-sm text-slate-400"></div>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <div id="weatherIcon" class="w-24 h-24"></div>
+
+                <div class="text-right">
+                  <div class="flex items-center gap-2">
+                    <div id="tempMain" class="text-4xl font-bold"></div>
+                    <button id="unitToggle" class="px-2 py-1 border rounded text-sm">°C</button>
+                  </div>
+                  <div class="text-sm text-slate-400" id="tempExtras"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4 border-slate-700/30" />
+
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <div class="flex items-center gap-2"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg><span id="humidity">Humidity: —</span></div>
+              <div class="flex items-center gap-2"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg><span id="wind">Wind: —</span></div>
+              <div class="flex items-center gap-2"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" /></svg><span id="pressure">Pressure: —</span></div>
+              <div class="flex items-center gap-2"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 2v4" stroke="currentColor" stroke-width="2"/></svg><span id="sunTimes">Sun: —</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="forecastWrap" class="glass rounded-lg p-4 shadow-sm">
+          <h2 class="font-semibold mb-3">5-day Forecast</h2>
+          <div id="forecast" class="flex gap-3 overflow-x-auto pb-2"></div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="glass rounded-lg p-4 mb-4 shadow-sm">
+          <h3 class="font-semibold mb-2">Quick actions</h3>
+          <div class="flex flex-col gap-2">
+            <button id="refreshBtn" class="px-3 py-2 rounded border">Refresh last</button>
+            <button id="clearRecent" class="px-3 py-2 rounded border">Clear recent</button>
+          </div>
+        </div>
+
+        <div class="glass rounded-lg p-4 shadow-sm">
+          <h3 class="font-semibold mb-2">Notes / Alerts</h3>
+          <div id="alerts" class="text-sm text-slate-600">No alerts.</div>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="mt-8 text-sm text-slate-500"></footer>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
